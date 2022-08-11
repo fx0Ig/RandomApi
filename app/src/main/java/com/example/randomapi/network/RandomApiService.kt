@@ -1,5 +1,11 @@
 package com.example.randomapi.network
 
-const val BASE_URL = "https://randomuser.me/api/"
+import retrofit2.http.GET
+import retrofit2.http.Query
 
-const val API_KEY = "C6D7-6O7Z-EQEA-QS4F"
+const val BASE_URL = "https://randomuser.me/api/?results=10"
+
+interface RandomApiService{
+    @GET(BASE_URL)
+    suspend fun getApiResponse(): ApiResponse
+}

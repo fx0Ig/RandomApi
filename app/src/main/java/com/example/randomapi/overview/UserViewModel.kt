@@ -8,12 +8,18 @@ import com.example.randomapi.domain.User
 
 class UserViewModel : ViewModel() {
 
-    var users : LiveData<List<User>> = MutableLiveData()
+    private var _selectedUser: MutableLiveData<User> = MutableLiveData()
+    val selectedUser: LiveData<User> = _selectedUser
+
+    var users: LiveData<List<User>> = MutableLiveData()
     private val dao = AppComponent.userDatabase.userDao()
+
     init {
         users = dao.getUsers()
-
     }
 
+    fun setSelectedUser(userId: Int) {
+        _selectedUser.value = users.value?.first { it.id == userId }
+    }
 
 }

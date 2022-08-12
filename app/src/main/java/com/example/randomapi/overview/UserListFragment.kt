@@ -1,6 +1,7 @@
 package com.example.randomapi.overview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,12 +28,15 @@ class UserListFragment : Fragment(), UserClickListener {
         adapter = UserItemAdapter(this)
         binding.userRecyclerView.adapter = adapter
         viewModel.users.observe(viewLifecycleOwner) {
+            if (!it.isNullOrEmpty() && viewModel.selectedUser.value == null) {
+            viewModel.setSelectedUser(it.first().id)
+        }
             adapter.userList = it
         }
     }
 
-    override fun onItemClick(position: Int) {
-        TODO("Not yet implemented")
+    override fun onItemClick(userId: Int) {
+        viewModel.setSelectedUser(userId)
     }
 
 

@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.randomapi.R
 import com.example.randomapi.databinding.UserItemBinding
 import com.example.randomapi.domain.User
 
@@ -36,8 +38,13 @@ class UserItemAdapter(private val listener: UserClickListener) :
 
         fun bind(item: User, position: Int) {
             binding.userName.text = item.name
+            binding.userSurname.text = item.surname
+            Glide.with(binding.root).load(item.picture).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .error(R.drawable.image_broken)
+                .fallback(R.drawable.image_loading)
+                .into(binding.profilePic)
             binding.userName.setOnClickListener {
-                listener.onItemClick(position)
+                listener.onItemClick(item.id)
             }
         }
 
@@ -60,5 +67,5 @@ class UserItemAdapter(private val listener: UserClickListener) :
 
 interface UserClickListener {
 
-    fun onItemClick(position: Int)
+    fun onItemClick(userId : Int)
 }
